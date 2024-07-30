@@ -1,0 +1,34 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(0, 0, 0);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.content {
+    background: rgba(var(--foreground-rgb), 0.9);
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    overflow-y: auto;
+    color: inherit;
+    font-family: inherit;
+}
+
+.canvasContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.canvas {
+    border: 1px solid rgba(var(--foreground-rgb), 0.5);
+    width: 5vw;
+    height: 100%;
+}
