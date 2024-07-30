@@ -11,21 +11,22 @@ interface OverlayProps {
 
 const Overlay: React.FC<OverlayProps> = ({ data, onClose }) => {
   const {
+    boundingBoxes: { diffBoundingBoxes = [] },
     fileData: { actualFilePath, baselineFilePath, diffFilePath },
     misMatchPercentage,
   } = data;
 
   const [transform, setTransform] = useState({ x: 0, y: 0, scale: 1 });
+  // @TODO: This needs to be changed in the future when the report is live
   const baselineImagePath = `/tmp/sauceLabsBaseline${
     baselineFilePath.split("/tests/sauceLabsBaseline")[1]
   }`;
-  // @TODO: This needs to be changed in the future when the report is live
   const actualImagePath = `/tmp/actual${
     actualFilePath.split("/.tmp/actual")[1]
   }`.replace("/tmp/", "/tmp/fail/");
-  const diffImagePath = `/tmp/diff${
-    diffFilePath.split("/.tmp/diff")[1]
-  }`.replace("/tmp/", "/tmp/fail/");
+  // const diffImagePath = `/tmp/diff${
+  //   diffFilePath.split("/.tmp/diff")[1]
+  // }`.replace("/tmp/", "/tmp/fail/");
 
   return (
     <div className={styles.overlay}>
@@ -38,13 +39,10 @@ const Overlay: React.FC<OverlayProps> = ({ data, onClose }) => {
             setTransform={setTransform}
           />
           <Canvas
-            imageSrc={
-              parseFloat(misMatchPercentage) > 0
-                ? diffImagePath
-                : actualImagePath
-            }
+            imageSrc={actualImagePath}
             transform={transform}
             setTransform={setTransform}
+            diffBoxes={diffBoundingBoxes}
           />
         </div>
       </div>
