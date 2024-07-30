@@ -25,6 +25,30 @@ const Canvas: React.FC<CanvasProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(new Image());
   const [hoveredBox, setHoveredBox] = useState<BoundingBox | null>(null);
+  const transformedBoxesRef = useRef<BoundingBox[]>([]);
+
+  const boxesAreEqual = (box1: BoundingBox, box2: BoundingBox) =>
+    box1.left === box2.left &&
+    box1.top === box2.top &&
+    box1.right === box2.right &&
+    box1.bottom === box2.bottom;
+
+  const getTransformedBoxes = (
+    boxes: BoundingBox[],
+    drawWidth: number,
+    drawHeight: number,
+    drawX: number,
+    drawY: number,
+    imageWidth: number,
+    imageHeight: number,
+    scale: number
+  ): BoundingBox[] =>
+    boxes.map((box) => ({
+      left: box.left * (drawWidth / imageWidth) * scale + drawX,
+      top: box.top * (drawHeight / imageHeight) * scale + drawY,
+      right: box.right * (drawWidth / imageWidth) * scale + drawX,
+      bottom: box.bottom * (drawHeight / imageHeight) * scale + drawY,
+    }));
 
   const drawImage = useCallback(
     (
@@ -59,27 +83,36 @@ const Canvas: React.FC<CanvasProps> = ({
         drawHeight * scale
       );
 
-      diffBoxes.forEach((box) => {
-        const boxX = box.left * (drawWidth / image.width) * scale + drawX;
-        const boxY = box.top * (drawHeight / image.height) * scale + drawY;
-        const boxWidth =
-          (box.right - box.left) * (drawWidth / image.width) * scale;
-        const boxHeight =
-          (box.bottom - box.top) * (drawHeight / image.height) * scale;
+      const newTransformedBoxes = getTransformedBoxes(
+        diffBoxes,
+        drawWidth,
+        drawHeight,
+        drawX,
+        drawY,
+        image.width,
+        image.height,
+        scale
+      );
+      transformedBoxesRef.current = newTransformedBoxes;
+
+      newTransformedBoxes.forEach((box) => {
+        const boxWidth = box.right - box.left;
+        const boxHeight = box.bottom - box.top;
 
         context.save();
-        context.globalAlpha = 0.5;
-        context.fillStyle = "rgba(255, 0, 255, 0.5)";
-        context.fillRect(boxX, boxY, boxWidth, boxHeight);
-        context.restore();
 
-        if (hoveredBox && hoveredBox === box) {
+        if (hoveredBox && boxesAreEqual(box, hoveredBox)) {
           context.strokeStyle = "rgba(255, 0, 255, 1)";
-          context.strokeRect(boxX, boxY, boxWidth, boxHeight);
+          context.strokeRect(box.left, box.top, boxWidth, boxHeight);
           context.font = "12px Arial";
           context.fillStyle = "rgba(255, 0, 255, 1)";
-          context.fillText("Changed", boxX, boxY - 5);
+          context.fillText("Changed", box.left, box.top - 5);
+        } else {
+          context.globalAlpha = 0.5;
+          context.fillStyle = "rgba(255, 0, 255, 0.5)";
+          context.fillRect(box.left, box.top, boxWidth, boxHeight);
         }
+        context.restore();
       });
     },
     [diffBoxes, hoveredBox]
@@ -126,12 +159,18 @@ const Canvas: React.FC<CanvasProps> = ({
 
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left - transform.x) / transform.scale;
-    const y = (e.clientY - rect.top - transform.y) / transform.scale;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    const box = diffBoxes.find(
+    const adjustedX = (x - transform.x) / transform.scale;
+    const adjustedY = (y - transform.y) / transform.scale;
+
+    const box = transformedBoxesRef.current.find(
       (box) =>
-        x >= box.left && x <= box.right && y >= box.top && y <= box.bottom
+        adjustedX >= box.left &&
+        adjustedX <= box.right &&
+        adjustedY >= box.top &&
+        adjustedY <= box.bottom
     );
     setHoveredBox(box || null);
   };
