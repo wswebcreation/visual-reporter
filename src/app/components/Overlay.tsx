@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./Overlay.module.css";
 import { MethodData } from "../types";
 import OverlayHeader from "./OverlayHeader";
@@ -19,6 +19,7 @@ const Overlay: React.FC<OverlayProps> = ({ data, onClose }) => {
   const baselineImagePath = `/tmp/sauceLabsBaseline${
     baselineFilePath.split("/tests/sauceLabsBaseline")[1]
   }`;
+  // @TODO: This needs to be changed in the future when the report is live
   const actualImagePath = `/tmp/actual${
     actualFilePath.split("/.tmp/actual")[1]
   }`.replace("/tmp/", "/tmp/fail/");
