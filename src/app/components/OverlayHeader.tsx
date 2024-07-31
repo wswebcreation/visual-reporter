@@ -1,14 +1,26 @@
+import React from "react";
 import { MethodData } from "../types";
 import BrowserIcon, { BrowserName } from "./BrowserIcon";
 import styles from "./OverlayHeader.module.css";
 import PlatformIcon, { PlatformName } from "./PlatformIcon";
 
-interface OverlayProps {
+interface OverlayHeaderProps {
   data: MethodData;
   onClose: () => void;
+  currentChange: number;
+  totalChanges: number;
+  onPrevChange: () => void;
+  onNextChange: () => void;
 }
 
-const OverlayHeader: React.FC<OverlayProps> = ({ data, onClose }) => {
+const OverlayHeader: React.FC<OverlayHeaderProps> = ({
+  data,
+  onClose,
+  currentChange,
+  totalChanges,
+  onPrevChange,
+  onNextChange,
+}) => {
   const {
     commandName,
     description,
@@ -39,7 +51,19 @@ const OverlayHeader: React.FC<OverlayProps> = ({ data, onClose }) => {
               </p>
             </div>
           </div>
-          <div className={styles.controls}>Controls</div>
+          <div className={styles.controls}>
+            {totalChanges > 0 && (
+              <>
+                <button onClick={onPrevChange}>&lt;</button>
+                <span>
+                  {currentChange === -1
+                    ? `All ${totalChanges} changes`
+                    : `${currentChange + 1} / ${totalChanges} changes`}
+                </span>
+                <button onClick={onNextChange}>&gt;</button>
+              </>
+            )}
+          </div>
         </div>
         <button className={styles.closeButton} onClick={onClose}>
           ×

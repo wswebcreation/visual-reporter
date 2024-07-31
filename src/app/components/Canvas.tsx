@@ -174,13 +174,13 @@ const Canvas: React.FC<CanvasProps> = ({
       }
     };
   }, [drawImage, imageSrc, transform, handleWheel]);
+  const classes = [
+    diffBoxes.length > 0 ? "diffContainer" : "",
+    styles.canvas,
+  ].join(" ");
 
   return (
-    <canvas
-      ref={canvasRef}
-      onMouseDown={handleMouseDown}
-      className={styles.canvas}
-    />
+    <canvas ref={canvasRef} onMouseDown={handleMouseDown} className={classes} />
   );
 };
 
