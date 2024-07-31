@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useCallback, useState } from "react";
+import styles from "./Canvas.module.css";
 
 interface BoundingBox {
   bottom: number;
@@ -24,14 +25,7 @@ const Canvas: React.FC<CanvasProps> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(new Image());
-  const [hoveredBox, setHoveredBox] = useState<BoundingBox | null>(null);
   const transformedBoxesRef = useRef<BoundingBox[]>([]);
-
-  const boxesAreEqual = (box1: BoundingBox, box2: BoundingBox) =>
-    box1.left === box2.left &&
-    box1.top === box2.top &&
-    box1.right === box2.right &&
-    box1.bottom === box2.bottom;
 
   const getTransformedBoxes = (
     boxes: BoundingBox[],
@@ -100,38 +94,13 @@ const Canvas: React.FC<CanvasProps> = ({
         const boxHeight = box.bottom - box.top;
 
         context.save();
-
-        if (hoveredBox && boxesAreEqual(box, hoveredBox)) {
-          console.log("Box:", box);
-          console.log("hoveredBox:", hoveredBox);
-          context.strokeStyle = "rgba(255, 0, 255, 1)";
-          context.strokeRect(box.left, box.top, boxWidth, boxHeight);
-          context.font = "12px Arial";
-          context.fillStyle = "rgba(255, 0, 255, 1)";
-          context.fillText("Changed", box.left, box.top - 5);
-        } else {
-          context.globalAlpha = 0.5;
-          context.fillStyle = "rgba(255, 0, 255, 0.5)";
-          context.fillRect(box.left, box.top, boxWidth, boxHeight);
-        }
-
-        // It is not the hoveredBox nor the box that is being hovered, it needs to be a different box
-        // but I'm not sure which one
-        if (hoveredBox) {
-          context.globalAlpha = 0.5;
-          context.fillStyle = "rgba(0, 255, 0, 0.5)";
-          context.fillRect(
-            box.left,
-            box.top,
-            box.right - box.left,
-            box.bottom - box.top
-          );
-        }
-
+        context.globalAlpha = 0.5;
+        context.fillStyle = "rgba(255, 0, 255, 0.5)";
+        context.fillRect(box.left, box.top, boxWidth, boxHeight);
         context.restore();
       });
     },
-    [diffBoxes, hoveredBox]
+    [diffBoxes]
   );
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -142,7 +111,6 @@ const Canvas: React.FC<CanvasProps> = ({
     const onMouseMove = (e: MouseEvent) => {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      // it might be that it's not changing the x and y values
       setTransform({
         ...startTransform,
         x: startTransform.x + dx,
@@ -163,7 +131,6 @@ const Canvas: React.FC<CanvasProps> = ({
     (e: WheelEvent) => {
       e.preventDefault();
       const scaleAmount = e.deltaY * -0.01;
-      // it might be that the x/y values are not changing when we zoom in/out
       setTransform((prev) => ({
         ...prev,
         scale: Math.min(Math.max(0.1, prev.scale + scaleAmount), 5),
@@ -171,33 +138,6 @@ const Canvas: React.FC<CanvasProps> = ({
     },
     [setTransform]
   );
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current) return;
-
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const adjustedX = (x - transform.x) / transform.scale;
-    const adjustedY = (y - transform.y) / transform.scale;
-
-    const box = transformedBoxesRef.current.find(
-      (box) =>
-        adjustedX >= box.left &&
-        adjustedX <= box.right &&
-        adjustedY >= box.top &&
-        adjustedY <= box.bottom
-    );
-    if (box) {
-      console.log("Original Mouse coordinates:", { x, y });
-      console.log("transform = ", transform);
-      console.log(`Mouse coordinates: (${adjustedX}, ${adjustedY})`);
-      console.log("Hovered over box:", box);
-    }
-    setHoveredBox(box || null);
-  };
 
   useEffect(() => {
     imageRef.current.src = imageSrc;
@@ -239,9 +179,7 @@ const Canvas: React.FC<CanvasProps> = ({
     <canvas
       ref={canvasRef}
       onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      className="canvas"
-      style={{ width: "50vw", height: "100%" }}
+      className={styles.canvas}
     />
   );
 };
