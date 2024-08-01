@@ -6,7 +6,7 @@ The `@wdio/visual-service` has a reporting output since [v5.2.0](https://github.
 
 We want to use this project as a playground to eventually create the first Visual HTML reporter as a service.
 
-[![Watch the video](https://raw.githubusercontent.com/wswebcreation/visual-reporter/main/thumbnail.png)](https://raw.githubusercontent.com/wswebcreation/visual-reporter/main/reporter-example.mp4)
+https://github.com/user-attachments/assets/ec467873-67ec-4ea3-a644-92b384c4d8c5
 
 ## Getting Started
 
