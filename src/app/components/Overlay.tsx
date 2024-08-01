@@ -56,6 +56,7 @@ const Overlay: React.FC<OverlayProps> = ({ data, onClose }) => {
       })),
     []
   );
+
   const centerImage = useCallback(() => {
     setTransform({ x: 0, y: 0, scale: 1 });
   }, []);
@@ -177,6 +178,9 @@ const Overlay: React.FC<OverlayProps> = ({ data, onClose }) => {
             transform={transform}
             setTransform={setTransform}
             diffBoxes={diffBoundingBoxes}
+            highlightedBox={
+              currentChange !== -1 ? diffBoundingBoxes[currentChange] : null
+            }
           />
         </div>
       </div>

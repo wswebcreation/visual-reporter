@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback, useState } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import styles from "./Canvas.module.css";
 
 interface BoundingBox {
@@ -15,6 +15,7 @@ interface CanvasProps {
     React.SetStateAction<{ x: number; y: number; scale: number }>
   >;
   diffBoxes?: BoundingBox[];
+  highlightedBox?: BoundingBox | null;
 }
 
 const Canvas: React.FC<CanvasProps> = ({
@@ -22,27 +23,52 @@ const Canvas: React.FC<CanvasProps> = ({
   transform,
   setTransform,
   diffBoxes = [],
+  highlightedBox = null,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(new Image());
   const transformedBoxesRef = useRef<BoundingBox[]>([]);
 
-  const getTransformedBoxes = (
-    boxes: BoundingBox[],
-    drawWidth: number,
-    drawHeight: number,
-    drawX: number,
-    drawY: number,
-    imageWidth: number,
-    imageHeight: number,
-    scale: number
-  ): BoundingBox[] =>
-    boxes.map((box) => ({
-      left: box.left * (drawWidth / imageWidth) * scale + drawX,
-      top: box.top * (drawHeight / imageHeight) * scale + drawY,
-      right: box.right * (drawWidth / imageWidth) * scale + drawX,
-      bottom: box.bottom * (drawHeight / imageHeight) * scale + drawY,
-    }));
+  const getTransformedBoxes = useCallback(
+    (
+      boxes: BoundingBox[],
+      drawWidth: number,
+      drawHeight: number,
+      drawX: number,
+      drawY: number,
+      imageWidth: number,
+      imageHeight: number,
+      scale: number
+    ): BoundingBox[] =>
+      boxes.map((box) => ({
+        left: box.left * (drawWidth / imageWidth) * scale + drawX,
+        top: box.top * (drawHeight / imageHeight) * scale + drawY,
+        right: box.right * (drawWidth / imageWidth) * scale + drawX,
+        bottom: box.bottom * (drawHeight / imageHeight) * scale + drawY,
+      })),
+    []
+  );
+
+  const translateBox = useCallback(
+    (
+      box: BoundingBox,
+      drawWidth: number,
+      drawHeight: number,
+      drawX: number,
+      drawY: number,
+      imageWidth: number,
+      imageHeight: number,
+      scale: number
+    ): BoundingBox => {
+      return {
+        left: box.left * (drawWidth / imageWidth) * scale + drawX,
+        top: box.top * (drawHeight / imageHeight) * scale + drawY,
+        right: box.right * (drawWidth / imageWidth) * scale + drawX,
+        bottom: box.bottom * (drawHeight / imageHeight) * scale + drawY,
+      };
+    },
+    []
+  );
 
   const drawImage = useCallback(
     (
@@ -97,10 +123,49 @@ const Canvas: React.FC<CanvasProps> = ({
         context.globalAlpha = 0.5;
         context.fillStyle = "rgba(255, 0, 255, 0.5)";
         context.fillRect(box.left, box.top, boxWidth, boxHeight);
+
+        if (highlightedBox) {
+          const translatedBox = translateBox(
+            highlightedBox,
+            drawWidth,
+            drawHeight,
+            drawX,
+            drawY,
+            image.width,
+            image.height,
+            scale
+          );
+          if (
+            Math.abs(box.left - translatedBox.left) < 1 &&
+            Math.abs(box.top - translatedBox.top) < 1 &&
+            Math.abs(box.right - translatedBox.right) < 1 &&
+            Math.abs(box.bottom - translatedBox.bottom) < 1
+          ) {
+            // Add animated effect
+            const existingCircles = document.querySelectorAll(
+              `.${styles["highlight-circle"]}`
+            );
+            existingCircles.forEach((circle) => circle.remove());
+
+            const circle = document.createElement("div");
+            circle.className = styles["highlight-circle"];
+            circle.style.left = `${
+              canvas.width + (box.left + box.right) / 2
+            }px`;
+            circle.style.top = `${(box.top + box.bottom) / 2}px`;
+
+            // Append the circle to the canvas container instead of the canvas parent
+            canvas.parentElement?.appendChild(circle);
+
+            setTimeout(() => {
+              circle.remove();
+            }, 1000);
+          }
+        }
         context.restore();
       });
     },
-    [diffBoxes]
+    [diffBoxes, getTransformedBoxes, highlightedBox, translateBox]
   );
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -174,6 +239,7 @@ const Canvas: React.FC<CanvasProps> = ({
       }
     };
   }, [drawImage, imageSrc, transform, handleWheel]);
+
   const classes = [
     diffBoxes.length > 0 ? "diffContainer" : "",
     styles.canvas,
