@@ -11,6 +11,8 @@ We want to use this project as a playground to eventually create the first Visua
   Your browser does not support the video tag.
 </video>
 
+[![Watch the video](https://raw.githubusercontent.com/wswebcreation/visual-reporter/main/thumnail.png)](https://raw.githubusercontent.com/wswebcreation/visual-reporter/main/reporter-example.mp4)
+
 ## Getting Started
 
 Clone the project
