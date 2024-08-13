@@ -54,3 +54,15 @@ export interface DescriptionData {
   description: string;
   data: TestData[];
 }
+
+export interface SnapshotInstanceData {
+  app?: string[];
+  browser?: { name: string; version: string }[];
+  deviceName?: string[];
+  platform: { name: string; version: string }[];
+}
+
+export interface SnapshotData {
+  descriptionData: DescriptionData[];
+  instanceData: SnapshotInstanceData;
+}

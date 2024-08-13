@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { DescriptionData } from "../types";
+import { DescriptionData, SnapshotInstanceData } from "../types";
 import { sortSnapshotData } from "../helpers/sortSnapshotData";
 
 const GetSnapshotData = () => {
-  const [data, setData] = useState<DescriptionData[]>([]);
+  const [descriptionData, setDescriptionData] = useState<DescriptionData[]>([]);
+  const [instanceData, setInstanceData] = useState<SnapshotInstanceData>();
   const [error, setError] = useState<string | null>(null);
   const hasFetchedData = useRef(false);
 
@@ -16,7 +17,8 @@ const GetSnapshotData = () => {
         }
         const jsonData: DescriptionData[] = await response.json();
         const sortedData = sortSnapshotData(jsonData);
-        setData(sortedData);
+        setDescriptionData(sortedData.descriptionData);
+        setInstanceData(sortedData.instanceData);
       } catch (err) {
         console.error("Error fetching data:", err);
         if (err instanceof Error) {
@@ -33,7 +35,7 @@ const GetSnapshotData = () => {
     }
   }, []);
 
-  return { data, error };
+  return { descriptionData, error, instanceData };
 };
 
 export default GetSnapshotData;
