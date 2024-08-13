@@ -40,7 +40,6 @@
     position: relative;
     width: 100%;
     padding-top: 100%;
-    /* 1:1 Aspect Ratio */
     overflow: hidden;
     background-color: #f0f0f0;
     display: flex;
@@ -49,12 +48,7 @@
 }
 
 .imageContainer img {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: auto;
+    object-fit: contain;
 }
 
 .instanceData {

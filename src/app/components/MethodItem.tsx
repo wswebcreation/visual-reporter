@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import styles from "./MethodItem.module.css";
 import { MethodData } from "../types";
 import BrowserIcon, { BrowserName } from "./BrowserIcon";
@@ -49,13 +50,22 @@ const MethodItem: React.FC<MethodItemProps> = ({ data }) => {
     parseFloat(misMatchPercentage) > 0
       ? `/tmp/diff${diffFilePath.split("/.tmp/diff")[1]}`
       : `/tmp/actual${actualFilePath.split("/.tmp/actual")[1]}`
-  ).replace("/tmp/", "/tmp/fail/");
+  )
+    .replace("/tmp/", "/tmp/fail/")
+    .replace(".png", "-thumbnail.png");
 
   return (
     <>
       <div className={styles.card} onClick={handleClick}>
         <div className={styles.imageContainer}>
-          <img src={imagePath} alt={`${tag} screenshot`} />
+          {/* <img src={imagePath} alt={`${tag} screenshot`} /> */}
+          <Image
+            src={imagePath}
+            alt={`${tag} screenshot`}
+            fill={true}
+            sizes="(max-width: 100%), (max-height: 100%)"
+            quality={25}
+          />
         </div>
         <div className={styles.instanceData}>
           <h4>{tag}</h4>
