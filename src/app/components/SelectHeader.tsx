@@ -7,7 +7,7 @@ import Select, {
   StylesConfig,
 } from "react-select";
 import styles from "./SelectHeader.module.css";
-import { SnapshotInstanceData } from "../types";
+import { SelectedOptions, SnapshotInstanceData } from "../types";
 
 interface OptionType {
   label: string;
@@ -43,11 +43,11 @@ const MultiValueContainer = (
 };
 
 const SelectHeader = ({
-  handleSelectOptions,
+  handleSelectedOptions,
   instanceData,
 }: {
-  handleSelectOptions: (
-    selectedOptions: string[] | "all" | "passed" | "failed",
+  handleSelectedOptions: (
+    selectedOptions: string[] | keyof SelectedOptions,
     type: string
   ) => void;
   instanceData: SnapshotInstanceData;
@@ -128,7 +128,7 @@ const SelectHeader = ({
       <Select
         onChange={(selectedOption) =>
           // @ts-ignore
-          handleSelectOptions(selectedOption.value, "status")
+          handleSelectedOptions(selectedOption.value, "status")
         }
         placeholder="Select the Status"
         options={[
@@ -143,7 +143,7 @@ const SelectHeader = ({
           components={{ MultiValueContainer }}
           isMulti
           onChange={(selectedOptions) =>
-            handleSelectOptions(
+            handleSelectedOptions(
               selectedOptions.map((option) => option.value),
               "app"
             )
@@ -159,7 +159,7 @@ const SelectHeader = ({
           hideSelectedOptions={false}
           isMulti
           onChange={(selectedOptions) =>
-            handleSelectOptions(
+            handleSelectedOptions(
               selectedOptions.map((option) => option.value),
               "browser"
             )
@@ -174,7 +174,7 @@ const SelectHeader = ({
           components={{ MultiValueContainer }}
           isMulti
           onChange={(selectedOptions) =>
-            handleSelectOptions(
+            handleSelectedOptions(
               selectedOptions.map((option) => option.value),
               "device"
             )
@@ -189,7 +189,7 @@ const SelectHeader = ({
           components={{ MultiValueContainer }}
           isMulti
           onChange={(selectedOptions) =>
-            handleSelectOptions(
+            handleSelectedOptions(
               selectedOptions.map((option) => option.value),
               "platform"
             )

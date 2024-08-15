@@ -66,3 +66,13 @@ export interface SnapshotData {
   descriptionData: DescriptionData[];
   instanceData: SnapshotInstanceData;
 }
+
+export type StatusFilter = "all" | "passed" | "failed";
+
+export interface SelectedOptions {
+  app: string[];
+  browser: string[];
+  device: string[];
+  platform: string[];
+  status: StatusFilter;
+}
