@@ -1,0 +1,20 @@
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    margin: 10px auto;
+    padding-left: calc(10px - 0.5rem);
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    border: 1px solid #fff;
+}
+
+.select {
+    padding: 5px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    background-color: #000;
+    color: #fff;
+}
