@@ -6,3 +6,28 @@
   width: calc(100% - 100px);
   margin: 0 auto;
 }
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 150px;
+  width: 450px;
+  border: 1px solid #666;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.loadingContainer p {
+  padding-bottom: 10px;
+}
+
+.loading {
+  font-size: 18px;
+  color: #666;
+}
+
+.loadingContainer ul {
+  margin-left: 20px;
+}

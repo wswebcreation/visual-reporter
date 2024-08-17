@@ -47,10 +47,11 @@ const MethodItem: React.FC<MethodItemProps> = ({ data }) => {
   const platformVersion = platform.version || notKnown;
 
   // Construct the API URL for serving the image
-  const imagePath =
+  const imagePath = (
     parseFloat(misMatchPercentage) > 0
       ? `/api/image?filePath=${encodeURIComponent(diffFilePath)}`
-      : `/api/image?filePath=${encodeURIComponent(actualFilePath)}`; //.replace(".png", "-thumbnail.png");
+      : `/api/image?filePath=${encodeURIComponent(actualFilePath)}`
+  ).replace(".png", "-VHTMLR-THUMBNAIL.png");
 
   return (
     <>
