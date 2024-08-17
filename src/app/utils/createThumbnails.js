@@ -50,7 +50,7 @@ async function processDirectory(directory) {
         const baseName = path.basename(file, ext);
         const outputFilePath = path.join(
           directory,
-          `${baseName}-thumbnail-sharp${ext}`
+          `${baseName}-thumbnail${ext}`
         );
 
         // Skip if the thumbnail already exists

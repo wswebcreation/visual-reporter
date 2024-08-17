@@ -33,7 +33,6 @@ const Overlay: React.FC<OverlayProps> = ({ data, onClose }) => {
     currentChange,
     handlePrevChange,
     handleNextChange,
-    centerImage,
   } = useChangeNavigation(diffBoundingBoxes, actualImagePath);
 
   return (

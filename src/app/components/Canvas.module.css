@@ -29,5 +29,4 @@
     pointer-events: none;
     animation: highlightAnimation 1s forwards;
     transform: translate(-50%, -50%);
-    /* Center the circle */
 }
