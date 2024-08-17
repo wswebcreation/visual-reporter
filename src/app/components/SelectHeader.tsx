@@ -1,10 +1,12 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import React from "react";
-import Select, {
+import {
   components,
   MultiValueGenericProps,
   StylesConfig,
+  ActionMeta,
 } from "react-select";
 import styles from "./SelectHeader.module.css";
 import { SelectedOptions, SnapshotInstanceData } from "../types";
@@ -13,7 +15,13 @@ interface OptionType {
   label: string;
   value: string;
 }
+
+const SelectNoSSR = dynamic(() => import("react-select"), {
+  ssr: false,
+}) as React.ComponentType<any>;
+
 const MAX_DISPLAYED_BADGES = 2;
+
 const MultiValueContainer = (
   props: MultiValueGenericProps<OptionType, true>
 ) => {
@@ -84,6 +92,7 @@ const SelectHeader = ({
         })
       )
     : [];
+
   const selectStyles: StylesConfig<OptionType, true> = {
     control: (originalStyles) => ({
       ...originalStyles,
@@ -92,7 +101,7 @@ const SelectHeader = ({
       backgroundColor: "black",
       width: "100%",
     }),
-    menu: (originalStyles, {}) => ({
+    menu: (originalStyles) => ({
       ...originalStyles,
       backgroundColor: "black",
       borderColor: "white",
@@ -123,12 +132,16 @@ const SelectHeader = ({
       color: "white",
     }),
   };
+
   return (
     <div className={styles.container}>
-      <Select
-        onChange={(selectedOption) =>
-          // @ts-ignore
-          handleSelectedOptions(selectedOption.value, "status")
+      <SelectNoSSR
+        onChange={(selectedOption: OptionType | null) =>
+          handleSelectedOptions(
+            // @ts-ignore
+            selectedOption ? selectedOption.value : "all",
+            "status"
+          )
         }
         placeholder="Select the Status"
         options={[
@@ -139,12 +152,14 @@ const SelectHeader = ({
         styles={selectStyles}
       />
       {appOptions.length > 0 && (
-        <Select
+        <SelectNoSSR
           components={{ MultiValueContainer }}
           isMulti
-          onChange={(selectedOptions) =>
+          onChange={(selectedOptions: OptionType[] | null) =>
             handleSelectedOptions(
-              selectedOptions.map((option) => option.value),
+              selectedOptions
+                ? selectedOptions.map((option) => option.value)
+                : [],
               "app"
             )
           }
@@ -154,13 +169,15 @@ const SelectHeader = ({
         />
       )}
       {browserOptions.length > 0 && (
-        <Select
+        <SelectNoSSR
           components={{ MultiValueContainer }}
           hideSelectedOptions={false}
           isMulti
-          onChange={(selectedOptions) =>
+          onChange={(selectedOptions: OptionType[] | null) =>
             handleSelectedOptions(
-              selectedOptions.map((option) => option.value),
+              selectedOptions
+                ? selectedOptions.map((option) => option.value)
+                : [],
               "browser"
             )
           }
@@ -170,12 +187,14 @@ const SelectHeader = ({
         />
       )}
       {deviceNameOptions.length > 0 && (
-        <Select
+        <SelectNoSSR
           components={{ MultiValueContainer }}
           isMulti
-          onChange={(selectedOptions) =>
+          onChange={(selectedOptions: OptionType[] | null) =>
             handleSelectedOptions(
-              selectedOptions.map((option) => option.value),
+              selectedOptions
+                ? selectedOptions.map((option) => option.value)
+                : [],
               "device"
             )
           }
@@ -185,12 +204,14 @@ const SelectHeader = ({
         />
       )}
       {platformOptions.length > 0 && (
-        <Select
+        <SelectNoSSR
           components={{ MultiValueContainer }}
           isMulti
-          onChange={(selectedOptions) =>
+          onChange={(selectedOptions: OptionType[] | null) =>
             handleSelectedOptions(
-              selectedOptions.map((option) => option.value),
+              selectedOptions
+                ? selectedOptions.map((option) => option.value)
+                : [],
               "platform"
             )
           }
