@@ -1,26 +1,32 @@
 const fs = require("fs");
 const path = require("path");
-const Jimp = require("jimp");
+const sharp = require("sharp");
 
 // Resolve paths dynamically based on the current working directory
 const BASE_PATH = path.resolve(process.cwd(), "public/.tmp/fail");
 
 async function resizeImage(inputPath, outputPath) {
   try {
-    const image = await Jimp.read(inputPath);
-    const width = image.bitmap.width;
+    const image = sharp(inputPath);
+    const metadata = await image.metadata();
 
+    let width = metadata.width;
+    let height = metadata.height;
+
+    // Determine new width and height while maintaining aspect ratio
     let newWidth = width > 300 ? 300 : width;
+    let newHeight = Math.round((height / width) * newWidth);
 
-    // Resize image maintaining aspect ratio
-    await image.resize(newWidth, Jimp.AUTO);
-
-    // Crop the height to 300 if it exceeds
-    if (image.bitmap.height > 300) {
-      await image.crop(0, 0, newWidth, 300);
-    }
-
-    await image.writeAsync(outputPath);
+    // Resize and crop if necessary
+    await image
+      .resize(newWidth, newHeight)
+      .extract({
+        left: 0,
+        top: 0,
+        width: newWidth,
+        height: Math.min(newHeight, 300),
+      })
+      .toFile(outputPath);
   } catch (err) {
     console.error(`Error processing image ${inputPath}: ${err.message}`);
   }
@@ -44,7 +50,7 @@ async function processDirectory(directory) {
         const baseName = path.basename(file, ext);
         const outputFilePath = path.join(
           directory,
-          `${baseName}-thumbnail${ext}`
+          `${baseName}-thumbnail-sharp${ext}`
         );
 
         // Skip if the thumbnail already exists
@@ -65,6 +71,7 @@ async function processDirectory(directory) {
 }
 
 async function main() {
+  console.time("Total Execution Time");
   const folders = ["actual", "diff"];
 
   const tasks = folders.map((folder) => {
@@ -74,6 +81,7 @@ async function main() {
 
   // Execute all directory processing tasks in parallel
   await Promise.all(tasks);
+  console.timeEnd("Total Execution Time");
 }
 
 main().catch((err) => console.error(`Error in main: ${err.message}`));
