@@ -58,7 +58,6 @@ const MethodItem: React.FC<MethodItemProps> = ({ data }) => {
     <>
       <div className={styles.card} onClick={handleClick}>
         <div className={styles.imageContainer}>
-          {/* <img src={imagePath} alt={`${tag} screenshot`} /> */}
           <Image
             src={imagePath}
             alt={`${tag} screenshot`}

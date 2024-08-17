@@ -26,7 +26,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/helpers/createThumbnails.js"
+    "src/app/utils/createThumbnails.js"
   ],
   "exclude": ["node_modules"]
 }

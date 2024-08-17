@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { DescriptionData, SnapshotInstanceData } from "../types";
-import { sortSnapshotData } from "../helpers/sortSnapshotData";
+import { sortSnapshotData } from "../utils/sortSnapshotData";
 
 const GetSnapshotData = () => {
   const [descriptionData, setDescriptionData] = useState<DescriptionData[]>([]);
