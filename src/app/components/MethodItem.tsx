@@ -45,14 +45,12 @@ const MethodItem: React.FC<MethodItemProps> = ({ data }) => {
     browser?.version === "not-known" ? notKnown : browser?.version;
   const device = deviceName || notKnown;
   const platformVersion = platform.version || notKnown;
-  // This needs to be changed in the future when the data is live
-  const imagePath = (
+
+  // Construct the API URL for serving the image
+  const imagePath =
     parseFloat(misMatchPercentage) > 0
-      ? `/tmp/diff${diffFilePath.split("/.tmp/diff")[1]}`
-      : `/tmp/actual${actualFilePath.split("/.tmp/actual")[1]}`
-  )
-    .replace("/tmp/", "/tmp/fail/")
-    .replace(".png", "-thumbnail.png");
+      ? `/api/image?filePath=${encodeURIComponent(diffFilePath)}`
+      : `/api/image?filePath=${encodeURIComponent(actualFilePath)}`; //.replace(".png", "-thumbnail.png");
 
   return (
     <>

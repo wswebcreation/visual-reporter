@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { DescriptionData, SnapshotInstanceData } from "../types";
 import { sortSnapshotData } from "../utils/sortSnapshotData";
 
-const GetSnapshotData = () => {
+const GetSnapshotData = (outputJsonPath: string) => {
   const [descriptionData, setDescriptionData] = useState<DescriptionData[]>([]);
   const [instanceData, setInstanceData] = useState<SnapshotInstanceData>();
   const [error, setError] = useState<string | null>(null);
@@ -11,7 +11,9 @@ const GetSnapshotData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/data");
+        const response = await fetch(
+          `/api/data?outputPath=${encodeURIComponent(outputJsonPath)}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }

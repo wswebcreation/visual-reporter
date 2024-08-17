@@ -4,14 +4,16 @@ import path from "path";
 import { DescriptionData } from "../../types";
 
 export async function GET(req: NextRequest) {
-  const filePath = path.join(
-    process.cwd(),
-    "public",
-    ".tmp",
-    "fail",
-    "actual",
-    "output.json"
-  );
+  const { searchParams } = new URL(req.url);
+  const filePath = searchParams.get("outputPath");
+
+  if (!filePath) {
+    return NextResponse.json(
+      { error: "outputPath query parameter is required" },
+      { status: 400 }
+    );
+  }
+
   try {
     const jsonData: DescriptionData[] = JSON.parse(
       fs.readFileSync(filePath, "utf-8")

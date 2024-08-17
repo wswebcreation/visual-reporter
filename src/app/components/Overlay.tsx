@@ -15,17 +15,12 @@ const Overlay: React.FC<OverlayProps> = ({ data, onClose }) => {
     boundingBoxes: { diffBoundingBoxes = [] },
     fileData: { actualFilePath, baselineFilePath },
   } = data;
-
-  // @TODO: This needs to be changed in the future when the report is live
-  const baselineImagePath = `/tmp/sauceLabsBaseline${
-    baselineFilePath.split("/tests/sauceLabsBaseline")[1]
-  }`;
-  const actualImagePath = `/tmp/actual${
-    actualFilePath.split("/.tmp/actual")[1]
-  }`.replace("/tmp/", "/tmp/fail/");
-  // const diffImagePath = `/tmp/diff${
-  //   diffFilePath.split("/.tmp/diff")[1]
-  // }`.replace("/tmp/", "/tmp/fail/`);
+  const baselineImagePath = `/api/image?filePath=${encodeURIComponent(
+    baselineFilePath
+  )}`;
+  const actualImagePath = `/api/image?filePath=${encodeURIComponent(
+    actualFilePath
+  )}`;
 
   const {
     transform,
