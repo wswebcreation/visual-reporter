@@ -18,16 +18,6 @@ const GetSnapshotData = (outputJsonPath: string) => {
           throw new Error("Failed to fetch data");
         }
         const jsonData: DescriptionData[] = await response.json();
-
-        // Send data to the server to create thumbnails
-        await fetch("/api/thumbnails", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(jsonData),
-        });
-
         const sortedData = sortSnapshotData(jsonData);
         setDescriptionData(sortedData.descriptionData);
         setInstanceData(sortedData.instanceData);

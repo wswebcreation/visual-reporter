@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "node ./src/app/scripts/generateThumbnails.mjs && next dev",
+    "build": "node ./src/app/scripts/generateThumbnails.mjs && next build",
+    "export": "node ./src/app/scripts/generateThumbnails.mjs && NEXT_EXPORT=true next build",
+    "lint": "next lint",
+    "serve": "next start",
+    "static": "npm run export && npx serve out",
+    "start": "next start"
   },
   "dependencies": {
     "next": "14.2.5",
