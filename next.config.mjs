@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: process.env.NEXT_EXPORT === "true" ? "export" : undefined,
+  ...(process.env.NEXT_PUBLIC_BUILD_MODE === "static"
+    ? {
+        // assetPrefix: "./",
+        output: "export",
+      }
+    : {}),
   // async rewrites() {
   //   return [
   //     {

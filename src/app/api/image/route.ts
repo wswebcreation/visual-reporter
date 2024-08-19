@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
-import path from "path";
 
 export async function GET(req: NextRequest) {
+  // Check if running in a static export context
+  if (process.env.NEXT_PUBLIC_BUILD_MODE === "static") {
+    return NextResponse.json(
+      { error: "This route is not available during export" },
+      { status: 404 }
+    );
+  }
+
   const { searchParams } = new URL(req.url);
   const filePath = searchParams.get("filePath");
 

@@ -47,23 +47,35 @@ const MethodItem: React.FC<MethodItemProps> = ({ data }) => {
   const platformVersion = platform.version || notKnown;
 
   // Construct the API URL for serving the image
-  const imagePath = (
-    parseFloat(misMatchPercentage) > 0
-      ? `/api/image?filePath=${encodeURIComponent(diffFilePath)}`
-      : `/api/image?filePath=${encodeURIComponent(actualFilePath)}`
-  ).replace(".png", "-VHTMLR-THUMBNAIL.png");
+  const isStatic = process.env.NEXT_PUBLIC_BUILD_MODE === "static";
+  let imagePath;
+  if (isStatic) {
+    imagePath =
+      parseFloat(misMatchPercentage) > 0 ? diffFilePath : actualFilePath;
+  } else {
+    imagePath =
+      parseFloat(misMatchPercentage) > 0
+        ? `/api/image?filePath=${encodeURIComponent(diffFilePath)}`
+        : `/api/image?filePath=${encodeURIComponent(actualFilePath)}`;
+  }
+  imagePath = imagePath?.replace(".png", "-VHTMLR-THUMBNAIL.png");
 
   return (
     <>
       <div className={styles.card} onClick={handleClick}>
         <div className={styles.imageContainer}>
-          <Image
-            src={imagePath}
-            alt={`${tag} screenshot`}
-            fill={true}
-            sizes="(max-width: 100%), (max-height: 100%)"
-            quality={25}
-          />
+          {isStatic ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={imagePath as string} alt={`${tag} screenshot`} />
+          ) : (
+            <Image
+              src={imagePath as string}
+              alt={`${tag} screenshot`}
+              fill={true}
+              sizes="(max-width: 100%), (max-height: 100%)"
+              quality={25}
+            />
+          )}
         </div>
         <div className={styles.instanceData}>
           <h4>{tag}</h4>
