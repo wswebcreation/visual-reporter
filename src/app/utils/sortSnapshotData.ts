@@ -4,12 +4,27 @@ import {
   SnapshotInstanceData,
   InstanceData,
   MethodData,
+  BoundingBox,
 } from "../types";
 
 function addUnique<T>(set: Set<T>, item: T | undefined): void {
   if (item !== undefined && item !== null) {
     set.add(item);
   }
+}
+
+function sortBoundingBoxes(boxA: BoundingBox, boxB: BoundingBox): number {
+  if (boxA.top !== boxB.top) {
+    return boxA.top - boxB.top;
+  }
+
+  return boxA.left - boxB.left;
+}
+
+function processMethodData(method: MethodData): MethodData {
+  method.boundingBoxes.diffBoundingBoxes.sort(sortBoundingBoxes);
+
+  return method;
 }
 
 function sortMethods(methodA: MethodData, methodB: MethodData): number {
@@ -56,7 +71,7 @@ function sortDescriptionData(jsonData: DescriptionData[]): DescriptionData[] {
       ...description,
       data: description.data.map((test) => ({
         ...test,
-        data: test.data.sort(sortMethods),
+        data: test.data.map(processMethodData).sort(sortMethods),
       })),
     }));
 }
