@@ -1,13 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: "/tmp/:path*",
-        destination: "/.tmp/:path*",
-      },
-    ];
-  },
+  output: process.env.NEXT_EXPORT === "true" ? "export" : undefined,
   webpack(config) {
     config.module.rules.push({
       test: /\.(png|jpe?g|gif|svg)$/i,

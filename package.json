@@ -1,17 +1,26 @@
 {
-  "name": "visual-reporter",
+  "name": "@wdio/visual-reporter",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "bin": {
+    "visual-reporter": "./dist/cli.js"
+  },
   "scripts": {
-    "dev": "node ./src/app/scripts/generateThumbnails.mjs && next dev",
-    "build": "node ./src/app/scripts/generateThumbnails.mjs && next build",
-    "export": "node ./src/app/scripts/generateThumbnails.mjs && NEXT_EXPORT=true next build",
+    "dev": "npm run generate-thumbnails && npm-run-all --parallel watch:scripts next-dev",
+    "build": "npm run generate-thumbnails && npm run build:scripts &&  next build",
+    "export": "npm run generate-thumbnails && NEXT_EXPORT=true next build",
+    "build:scripts": "tsc -p tsconfig.scripts.json",
+    "watch:scripts": "tsc -p tsconfig.scripts.json --watch",
+    "generate-thumbnails": "node ./src/app/scripts/generateThumbnails.mjs",
+    "next-dev": "next dev",
     "lint": "next lint",
     "serve": "next start",
     "static": "npm run export && npx serve out",
     "start": "next start"
   },
   "dependencies": {
+    "@inquirer/prompts": "^5.3.8",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
@@ -25,6 +34,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
+    "npm-run-all": "^4.1.5",
     "typescript": "^5"
   }
 }
