@@ -2,6 +2,8 @@ import fs from "fs";
 import path from "path";
 import sharp from "sharp";
 
+const DEBUG_MODE = process.env.VISUAL_REPORT_DEBUG_LEVEL === "debug";
+
 async function resizeImage(inputPath, outputPath) {
   try {
     const image = sharp(inputPath);
@@ -23,7 +25,9 @@ async function resizeImage(inputPath, outputPath) {
       })
       .toFile(outputPath);
   } catch (err) {
-    console.error(`Error processing image ${inputPath}: ${err.message}`);
+    if (DEBUG_MODE) {
+      console.error(`Error processing image ${inputPath}: ${err.message}`);
+    }
   }
 }
 
@@ -43,7 +47,9 @@ async function createThumbnailForFile(filePath) {
 
     await resizeImage(filePath, outputFilePath);
   } catch (err) {
-    console.error(`Error creating thumbnail for ${filePath}: ${err.message}`);
+    if (DEBUG_MODE) {
+      console.error(`Error creating thumbnail for ${filePath}: ${err.message}`);
+    }
   }
 }
 
@@ -70,7 +76,9 @@ async function generateThumbnails() {
       }
     }
   } catch (error) {
-    console.error(`Error generating thumbnails: ${error.message}`);
+    if (DEBUG_MODE) {
+      console.error(`Error generating thumbnails: ${error.message}`);
+    }
   }
 }
 
