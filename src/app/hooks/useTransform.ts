@@ -47,7 +47,7 @@ export const useTransform = (
       const scaleAmount = e.deltaY * -0.01;
       setTransform((prev) => ({
         ...prev,
-        scale: Math.min(Math.max(0.1, prev.scale + scaleAmount), 5),
+        scale: Math.min(Math.max(0.1, prev.scale + scaleAmount), 50),
       }));
     },
     [setTransform]
