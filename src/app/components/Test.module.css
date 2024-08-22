@@ -1,6 +1,9 @@
 .test {
     margin-bottom: 2rem;
-    /* margin-left: 2rem; */
+}
+
+.test:last-child {
+    margin-bottom: 0;
 }
 
 .testTitle {

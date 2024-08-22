@@ -13,12 +13,13 @@ const LoadingContainer = () => {
         />
         <h1>Visual Report</h1>
       </div>
-      <p className={styles.text}>
-        Please wait while we create your report. We are:
-      </p>
+      <p className={styles.text}>Please wait while we create your report.</p>
       <ul>
-        <li className={styles.text}>fetching data</li>
-        <li className={styles.text}>creating thumbnails</li>
+        <li className={styles.text}>Fetching data...</li>
+        <li className={styles.text}>Sorting data...</li>
+        <li className={styles.text}>Attaching thumbnails...</li>
+        <li className={styles.text}>Attaching snapshots...</li>
+        <li className={styles.text}>Stitching it all together...</li>
       </ul>
     </div>
   );
