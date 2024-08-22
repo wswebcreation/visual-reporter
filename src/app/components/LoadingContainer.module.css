@@ -7,7 +7,7 @@
     border: 1px solid rgba(var(--foreground-rgb), 0.5);
     margin: 0 auto;
     padding: 10px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-large);
 }
 
 .header {

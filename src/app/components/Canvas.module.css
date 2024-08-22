@@ -24,7 +24,7 @@
 
 .highlight-circle {
     position: absolute;
-    border-radius: 50%;
+    border-radius: var(--border-radius-50);
     background-color: rgba(255, 0, 255, 0.5);
     pointer-events: none;
     animation: highlightAnimation 1s forwards;
