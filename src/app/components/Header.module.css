@@ -1,8 +1,8 @@
 .navbarContainer {
   position: fixed;
   top: 0;
-  height: 125px;
-  background-color: #000;
+  height: 85px;
+  background-color: #efefef;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -30,4 +30,10 @@
 .navbarItems h1 {
   padding: 0.25rem 0.75rem;
   text-wrap: nowrap;
+}
+
+@media (prefers-color-scheme: dark) {
+  .navbarContainer {
+    background-color: #000;
+  }
 }

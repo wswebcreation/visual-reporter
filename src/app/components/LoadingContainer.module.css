@@ -4,9 +4,10 @@
     justify-content: flex-start;
     align-items: flex-start;
     width: 450px;
-    border: 1px solid #fff;
+    border: 1px solid rgba(var(--foreground-rgb), 0.5);
     margin: 0 auto;
     padding: 10px;
+    border-radius: 8px;
 }
 
 .header {
@@ -27,7 +28,6 @@
 
 .text {
     font-size: 18px;
-    color: #fff;
 }
 
 .container ul {

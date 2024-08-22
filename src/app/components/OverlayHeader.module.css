@@ -1,4 +1,5 @@
 .header {
+    background-color: #efefef;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -26,7 +27,6 @@
 .testContainer {
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
     flex-grow: 1;
     padding: 16px;
 }
@@ -48,6 +48,33 @@
     padding: 16px;
 }
 
+.controls button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    cursor: pointer;
+    outline: none;
+    margin: 0 8px;
+    font-size: 16px;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.controls button:focus {
+    outline: none;
+}
+
+.controls button:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
 .closeButton {
     background: none;
     border: none;
@@ -55,6 +82,7 @@
     cursor: pointer;
     padding: 16px;
     border-left: 1px solid rgba(var(--foreground-rgb), 0.5);
+    color: var(--black);
 }
 
 .instanceDataWrapper {
@@ -85,4 +113,14 @@
 
 .divider {
     margin: 0px 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .header {
+        background-color: #000;
+    }
+
+    .closeButton {
+        color: var(--white);
+    }
 }

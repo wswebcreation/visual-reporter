@@ -1,8 +1,8 @@
 import React from "react";
 import { MethodData } from "../types";
 import BrowserIcon, { BrowserName } from "./BrowserIcon";
-import styles from "./OverlayHeader.module.css";
 import PlatformIcon, { PlatformName } from "./PlatformIcon";
+import styles from "./OverlayHeader.module.css";
 
 interface OverlayHeaderProps {
   data: MethodData;
@@ -22,11 +22,8 @@ const OverlayHeader: React.FC<OverlayHeaderProps> = ({
   onNextChange,
 }) => {
   const {
-    commandName,
     description,
     instanceData: { browser, deviceName, platform },
-    fileData: { actualFilePath, diffFilePath },
-    misMatchPercentage,
     tag,
     test,
   } = data;

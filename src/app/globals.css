@@ -4,10 +4,12 @@
     "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
   --foreground-rgb: 0, 0, 0;
+  --black: #000;
+  --white: #fff;
   --background-start-rgb: 250, 250, 250;
   --background-end-rgb: 255, 255, 255;
-  --primary-color: #0071ff;
-  --secondary-color: #16abff;
+  --primary-color: #ea5906;
+  --secondary-color: #d35005;
   --primary-glow: conic-gradient(from 180deg at 50% 50%,
       rgba(22, 171, 255, 0.2) 0deg,
       rgba(8, 133, 255, 0.2) 55deg,
@@ -34,8 +36,12 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-gradient: linear-gradient(to right,
+        black,
+        #333333,
+        black);
+    --primary-color: #ea5906;
+    --secondary-color: #d35005;
     --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
     --secondary-glow: linear-gradient(to bottom right,
         rgba(1, 65, 255, 0),
@@ -55,7 +61,12 @@
     --card-rgb: 100, 100, 100;
     --card-border-rgb: 200, 200, 200;
   }
+
+  body {
+    background: var(--background-gradient);
+  }
 }
+
 
 * {
   box-sizing: border-box;
@@ -68,7 +79,7 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   color: rgb(var(--foreground-rgb));
-  background: radial-gradient(circle, #0000 0, #000c 100%);
+  /* background: var(--background-gradient); */
 }
 
 a {
@@ -79,12 +90,6 @@ a {
 
 a:hover {
   color: var(--secondary-color);
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
 
 .chevron {
