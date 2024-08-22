@@ -12,7 +12,7 @@ https://github.com/user-attachments/assets/d6b28de2-39c4-4c75-9ccd-219094c0dece
 
 ### The Visual Reporter
 
-https://github.com/user-attachments/assets/ec467873-67ec-4ea3-a644-92b384c4d8c5
+https://github.com/user-attachments/assets/9cdfec36-e1ff-4b48-a842-23f3f7d5768e
 
 ## Getting Started
 
