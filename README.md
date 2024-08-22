@@ -6,6 +6,12 @@ The `@wdio/visual-service` has a reporting output since [v5.2.0](https://github.
 
 We want to use this project as a playground to eventually create the first Visual HTML reporter as a service.
 
+### The CLI
+
+https://github.com/user-attachments/assets/d6b28de2-39c4-4c75-9ccd-219094c0dece
+
+### The Visual Reporter
+
 https://github.com/user-attachments/assets/ec467873-67ec-4ea3-a644-92b384c4d8c5
 
 ## Getting Started
