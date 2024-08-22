@@ -7,6 +7,8 @@ import GetSnapshotData from "./hooks/getSnapshotData";
 import SelectHeader from "./components/SelectHeader";
 import { SelectedOptions, SnapshotInstanceData } from "./types";
 import UseFilteredDescriptionData from "./hooks/filterSnapshotData";
+import Header from "./components/Header";
+import LoadingContainer from "./components/LoadingContainer";
 
 const Home: React.FC = () => {
   const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({
@@ -45,33 +47,28 @@ const Home: React.FC = () => {
 
   return (
     <div className={styles.main}>
-      <h1>WebdriverIO Visual Report</h1>
       {loading ? (
-        <div className={styles.loadingContainer}>
-          <p className={styles.loading}>
-            Please wait while we create your report. We are:
-          </p>
-          <ul>
-            <li className={styles.loading}>fetching data</li>
-            <li className={styles.loading}>creating thumbnails</li>
-          </ul>
+        <div className={styles.container}>
+          <LoadingContainer />
         </div>
       ) : error ? (
         <p className={styles.error}>{error}</p>
       ) : (
         <>
-          <SelectHeader
+          <Header
             handleSelectedOptions={handleSelectedOptions}
             instanceData={instanceData as SnapshotInstanceData}
           />
-          <div>
-            {filteredDescriptionData.map((item, index) => (
-              <Description
-                data={item.data}
-                description={item.description}
-                key={index}
-              />
-            ))}
+          <div className={styles.container}>
+            <div>
+              {filteredDescriptionData.map((item, index) => (
+                <Description
+                  data={item.data}
+                  description={item.description}
+                  key={index}
+                />
+              ))}
+            </div>
           </div>
         </>
       )}

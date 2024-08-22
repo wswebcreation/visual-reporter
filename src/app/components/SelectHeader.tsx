@@ -2,54 +2,20 @@
 
 import dynamic from "next/dynamic";
 import React from "react";
+import { StylesConfig } from "react-select";
 import {
-  components,
-  MultiValueGenericProps,
-  StylesConfig,
-  ActionMeta,
-} from "react-select";
+  OptionType,
+  SelectCustomPlaceholderProps,
+  SelectedOptions,
+  SnapshotInstanceData,
+} from "../types";
+import SelectCustomPlaceholder from "./SelectCustomPlaceholder";
+import SelectCustomMultiValueContainer from "./SelectCustomMultiValueContainer";
 import styles from "./SelectHeader.module.css";
-import { SelectedOptions, SnapshotInstanceData } from "../types";
-
-interface OptionType {
-  label: string;
-  value: string;
-}
 
 const SelectNoSSR = dynamic(() => import("react-select"), {
   ssr: false,
 }) as React.ComponentType<any>;
-
-const MAX_DISPLAYED_BADGES = 2;
-
-const MultiValueContainer = (
-  props: MultiValueGenericProps<OptionType, true>
-) => {
-  const { children, selectProps, data } = props;
-  const selectedValues = selectProps.value as OptionType[];
-
-  const index = selectedValues.findIndex(
-    (selectedOption) => selectedOption.value === data.value
-  );
-
-  if (index < MAX_DISPLAYED_BADGES) {
-    return (
-      <components.MultiValueContainer {...props}>
-        {children}
-      </components.MultiValueContainer>
-    );
-  }
-
-  if (index === MAX_DISPLAYED_BADGES) {
-    const remainingBadgeCount = selectedValues.length - MAX_DISPLAYED_BADGES;
-    return (
-      <div className={styles.overflowBadge}>+{remainingBadgeCount} more</div>
-    );
-  }
-
-  return null;
-};
-
 const SelectHeader = ({
   handleSelectedOptions,
   instanceData,
@@ -92,11 +58,9 @@ const SelectHeader = ({
         })
       )
     : [];
-
   const selectStyles: StylesConfig<OptionType, true> = {
     control: (originalStyles) => ({
       ...originalStyles,
-      marginLeft: "0.5rem",
       borderColor: "white",
       backgroundColor: "black",
       width: "100%",
@@ -136,6 +100,11 @@ const SelectHeader = ({
   return (
     <div className={styles.container}>
       <SelectNoSSR
+        components={{
+          Placeholder: (props: SelectCustomPlaceholderProps) => (
+            <SelectCustomPlaceholder {...props} iconName="status" />
+          ),
+        }}
         onChange={(selectedOption: OptionType | null) =>
           handleSelectedOptions(
             // @ts-ignore
@@ -143,7 +112,7 @@ const SelectHeader = ({
             "status"
           )
         }
-        placeholder="Select the Status"
+        placeholder="Status"
         options={[
           { value: "all", label: "All" },
           { value: "passed", label: "Passed" },
@@ -153,7 +122,12 @@ const SelectHeader = ({
       />
       {appOptions.length > 0 && (
         <SelectNoSSR
-          components={{ MultiValueContainer }}
+          components={{
+            MultiValueContainer: SelectCustomMultiValueContainer,
+            Placeholder: (props: SelectCustomPlaceholderProps) => (
+              <SelectCustomPlaceholder {...props} iconName="app" />
+            ),
+          }}
           isMulti
           onChange={(selectedOptions: OptionType[] | null) =>
             handleSelectedOptions(
@@ -163,14 +137,19 @@ const SelectHeader = ({
               "app"
             )
           }
-          placeholder="Select one or more apps"
+          placeholder="Apps"
           options={appOptions}
           styles={selectStyles}
         />
       )}
       {browserOptions.length > 0 && (
         <SelectNoSSR
-          components={{ MultiValueContainer }}
+          components={{
+            MultiValueContainer: SelectCustomMultiValueContainer,
+            Placeholder: (props: SelectCustomPlaceholderProps) => (
+              <SelectCustomPlaceholder {...props} iconName="browser" />
+            ),
+          }}
           hideSelectedOptions={false}
           isMulti
           onChange={(selectedOptions: OptionType[] | null) =>
@@ -181,14 +160,19 @@ const SelectHeader = ({
               "browser"
             )
           }
-          placeholder="Select one or more browsers"
+          placeholder="Browsers"
           options={browserOptions}
           styles={selectStyles}
         />
       )}
       {deviceNameOptions.length > 0 && (
         <SelectNoSSR
-          components={{ MultiValueContainer }}
+          components={{
+            MultiValueContainer: SelectCustomMultiValueContainer,
+            Placeholder: (props: SelectCustomPlaceholderProps) => (
+              <SelectCustomPlaceholder {...props} iconName="device" />
+            ),
+          }}
           isMulti
           onChange={(selectedOptions: OptionType[] | null) =>
             handleSelectedOptions(
@@ -198,14 +182,19 @@ const SelectHeader = ({
               "device"
             )
           }
-          placeholder="Select one or more devices"
+          placeholder="Devices"
           options={deviceNameOptions}
           styles={selectStyles}
         />
       )}
       {platformOptions.length > 0 && (
         <SelectNoSSR
-          components={{ MultiValueContainer }}
+          components={{
+            MultiValueContainer: SelectCustomMultiValueContainer,
+            Placeholder: (props: SelectCustomPlaceholderProps) => (
+              <SelectCustomPlaceholder {...props} iconName="platform" />
+            ),
+          }}
           isMulti
           onChange={(selectedOptions: OptionType[] | null) =>
             handleSelectedOptions(
@@ -215,7 +204,7 @@ const SelectHeader = ({
               "platform"
             )
           }
-          placeholder="Select one or more platforms"
+          placeholder="OS"
           options={platformOptions}
           styles={selectStyles}
         />

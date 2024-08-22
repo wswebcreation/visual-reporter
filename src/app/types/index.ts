@@ -1,5 +1,13 @@
 // @todo: This is ugly, this needs to come from the webdriver-image-comparison package or
 // visual testing type package
+
+import { PlaceholderProps } from "react-select";
+
+export interface OptionType {
+  label: string;
+  value: string;
+}
+
 export interface BoundingBox {
   bottom: number;
   right: number;
@@ -76,6 +84,20 @@ export interface SnapshotData {
 }
 
 export type StatusFilter = "all" | "passed" | "failed";
+
+export type SelectCustomPlaceholderProps = PlaceholderProps<
+  OptionType,
+  true
+> & {
+  iconName: string;
+};
+
+export type SelectCustomPlaceholderIconType =
+  | "status"
+  | "app"
+  | "browser"
+  | "device"
+  | "platform";
 
 export interface SelectedOptions {
   app: string[];

@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 450px;
+    border: 1px solid #fff;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.header h1 {
+    margin-left: 5px;
+}
+
+.container p {
+    padding-bottom: 10px;
+}
+
+.text {
+    font-size: 18px;
+    color: #fff;
+}
+
+.container ul {
+    margin-left: 20px;
+}

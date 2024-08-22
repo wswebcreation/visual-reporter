@@ -1,14 +1,10 @@
 .container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+    gap: 1.5rem;
+    margin: 0.25rem 25px 0.25rem 0.75rem;
     width: 100%;
-    margin: 10px auto;
-    padding-left: calc(10px - 0.5rem);
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    border: 1px solid #fff;
+    max-width: 975px;
 }
 
 .select {
