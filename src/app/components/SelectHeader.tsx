@@ -61,39 +61,39 @@ const SelectHeader = ({
   const selectStyles: StylesConfig<OptionType, true> = {
     control: (originalStyles) => ({
       ...originalStyles,
-      borderColor: "white",
-      backgroundColor: "black",
+      borderColor: "rgba(var(--foreground-rgb), 0.5)",
+      backgroundColor: "var(--select-background)",
       width: "100%",
     }),
     menu: (originalStyles) => ({
       ...originalStyles,
-      backgroundColor: "black",
-      borderColor: "white",
+      backgroundColor: "var(--select-background)",
+      borderColor: "rgba(var(--foreground-rgb), 0.5)",
     }),
     option: (originalStyles, state) => ({
       ...originalStyles,
       backgroundColor: state.isFocused
         ? "transparent"
         : state.isSelected
-        ? "white"
+        ? "var(--white)"
         : originalStyles.backgroundColor,
       color: state.isFocused
         ? "inherit"
         : state.isSelected
-        ? "black"
+        ? "var(--black)"
         : originalStyles.color,
       ":active": {
-        backgroundColor: "white",
-        color: "black",
+        backgroundColor: "var(--white)",
+        color: "var(--black)",
       },
       ":hover": {
-        backgroundColor: "white",
-        color: "black",
+        backgroundColor: "var(--white)",
+        color: "var(--black)",
       },
     }),
     singleValue: (originalStyles) => ({
       ...originalStyles,
-      color: "white",
+      color: "var(--foreground-rgb)",
     }),
   };
 
